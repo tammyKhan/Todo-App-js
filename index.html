@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/44b771e9c2.js" crossorigin="anonymous"></script>
+  <title>BriskTodo</title>
+      
+<!--  Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class', 
+      theme: {
+        extend: {},
+      },
+    };
+  </script>
+   <style>
+    body {
+      transition: background-color 0.3s ease;
+    }
+  </style>
+</head>
+
+<body  class=" w-11/12 mx-auto py-5 bg-[#344FA1] relative dark:bg-black">
+   <header>
+      <nav class="flex justify-between items-center">
+        <img class="w-36 md:w-40  " src="./images/todo-logo.svg" alt="">
+
+        <!-- Theme Toggle Button -->
+     <div id="themeToggle" class="w-14 h-7 rounded-full  border-2 border-[#839FEE]  flex items-center justify-between  cursor-pointer transition-all">
+        <!-- sun icon -->
+         <div  class="w-7 h-6 rounded-full flex items-center justify-center transition-all" id="sunIcon">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+               <circle cx="12" cy="12" r="5"></circle>
+               <path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path>
+            </svg>
+         </div>
+
+         <!-- moon icon -->
+         <div class="ml-auto w-7 h-6 rounded-full flex items-center justify-center transition-all" id="moonIcon">
+         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+         </svg>
+         </div>
+     </div>
+      </nav>
+   </header>
+  
+   <main class="space-y-5 mt-8 ">
+      <!-- Add Task Button -->
+     <div class="absolute right-0 top-96 w-12 h-12 rounded-full dark:bg-blue-900 bg-[#EB03FF] flex justify-center items-center cursor-pointer">
+      <i class="fa-solid fa-plus text-white"></i>
+     </div>
+
+      <!-- category section -->
+       <div class="grid grid-cols-3 gap-2  md:gap-6 ">
+         <!-- All tasks  -->
+         <div class="bg-[#1F0356] py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
+             <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#839FEE] flex items-center justify-center">
+                <i class="fa-solid fa-list-check text-white"></i>
+             </div>
+             <div class="text-white space-y-2">
+                <h3 class="md:text-xl text-base  font-bold">All Tasks</h3>
+                <p class="text-sm text-[#677AB8]"><span>40</span> tasks</p>
+             </div>
+         </div>
+
+        <!-- In Process tasks  -->
+         <div class="bg-[#1F0356] py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
+             <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#839FEE] flex items-center justify-center">
+               <i class="fa-solid fa-gears text-white"></i>
+           </div>
+             <div class="text-white space-y-2">
+                <h3 class="md:text-xl text-base  font-bold">In Process</h3>
+                <p class="text-sm text-[#677AB8]"><span>10</span> tasks</p>
+             </div>
+         </div>
+
+        <!-- Completed tasks  -->
+         <div class="bg-[#1F0356] py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
+             <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#839FEE] flex items-center justify-center">
+                <i class="fa-solid fa-check text-white"></i>
+             </div>
+             <div class="text-white space-y-2">
+                <h3 class="md:text-xl text-base  font-bold">Completed Tasks</h3>
+                <p class="text-sm text-[#677AB8]"><span>30</span> tasks</p>
+             </div>
+         </div>
+      </div>
+
+  <!-- sort -->
+   <div class="flex gap-2 justify-between sm:justify-center sm:gap-10  items-center">
+      <div class="md:w-2/3 flex gap-3 md:gap-8 items-center">
+         <h3 class="text-lg font-bold text-white">Sort :-</h3>
+         <div class="border-2 border-[#839FEE] rounded-3xl">
+            <button class="px-4 lg:px-8 py-2 font-semibold text-white rounded-3xl bg-[#EB03FF]">Created</button>
+            <button class="px-4 lg:px-8 py-2 font-semibold text-white rounded-3xl ">Priority</button>
+            <button class="px-4 lg:px-8 py-2 font-semibold text-white rounded-3xl ">Due Date</button>
+            <button class="px-4 lg:px-8 py-2 font-semibold text-white rounded-3xl ">A - Z</button>
+         </div>
+      </div>
+
+      <!-- search tasks -->
+      <div class="md:w-1/3 ">
+        <i class="fa-solid fa-magnifying-glass md:hidden text-white"></i>
+        <input type="text" placeholder="search tasks here" class="bg-transparent hidden md:block w-full placeholder:text-[#839FEE] text-white border-2 p-1 px-2 focus:ring-2 focus:ring-[#1F0356] outline-none rounded-3xl border-[#839FEE]  ">
+      </div>
+   </div>
+
+   <!--  actions -->
+   <div class="flex justify-between items-center">
+      <h3 class="text-[#839FEE] font-semibold">
+         <span>7</span> tasks left
+      </h3>
+
+      <div class="flex gap-2">
+         <button class="px-4 py-1 font-semibold text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF]">Select All</button>
+         <button class="px-4 py-1 font-semibold text-[#FF5730] border-2 border-[#FF5730] rounded-3xl ">Clear Complete</button>
+      </div>
+   </div>
+
+<!-- tasks container  -->
+   <div id="task-container" class="space-y-3">
+      <!-- task 01 -->
+       <div class="flex justify-between bg-[#1F0356] p-3 rounded-3xl">
+          <div class="flex items-start">
+            <input type="checkbox"
+             class="mx-4 mt-1 cursor-pointer h-5 w-5 border-2 border-[#839FEE] rounded appearance-none bg-transparent checked:bg-[#EB03FF]" name="" id="">
+            <div class="">
+              <h3 class="text-base text-white font-bold">Daily Meeting with team</h3>
+              <div class="flex gap-5 items-center mt-2 text-[#839FEE]">
+                <span class="text-sm ">Added : <span class="">24/04/2025</span></span>
+                <span class="px-4 py-1 text-xs font-medium text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF]">High</span>
+                <span class="px-4 py-1 text-xs font-medium text-[#94D09F] rounded-3xl border-2 border-[#94D09F]">Deadline: <span class=""> 30/08/2025 </span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-5 items-center mx-8">
+            <i class="fa-solid fa-pen-to-square text-[#BFAF1C] text-2xl cursor-pointer"></i>
+            <i class="fa-solid fa-trash text-[#FF5730] text-2xl cursor-pointer"></i>
+          </div>
+       </div>
+
+       <!-- task 02 -->
+       <div>
+
+       </div>
+
+       <!-- task 03 -->
+       <div>
+
+       </div>
+   </div>
+   </main>
+</body>
+<script src="./script.js"></script>
+</html>
