@@ -38,6 +38,30 @@
       moonIcon.classList.add("bg-[#1F0356]");
     }
   });
-
 // ___________  theme toggle end  ____________
    
+// ___________ add task btn functionality start __________
+const addTaskBtn = document.getElementById("addTaskBtn");
+const taskModal = document.getElementById("taskModal");
+const cancelBtn = document.getElementById("cancelBtn");
+const saveTaskBtn = document.getElementById("saveTaskBtn");
+const taskList = document.getElementById("taskList");
+const emptyMessage = document.getElementById("emptyMessage");
+
+const taskTitle = document.getElementById("taskTitle");
+const taskPriority = document.getElementById("taskPriority");
+const taskDueDate = document.getElementById("taskDueDate");
+
+// open Modal
+addTaskBtn.addEventListener("click", () => {
+  taskModal.classList.remove("hidden")
+})
+
+// close Modal
+cancelBtn.addEventListener("click", () => {
+  taskModal.classList.add("hidden")
+})
+
+
+// ___________ add task btn functionality end __________
+
