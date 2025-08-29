@@ -74,9 +74,32 @@ if(!title) {
   return;
 }
 
+// save to localstorage
+const task = {
+  title, priority, dueDate, createdAt
+};
+// get existing tasks from localstorage
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+// add new task
+tasks.push(task)
+// save back to localstorage
+localStorage.setItem("tasks", JSON.stringify(tasks))
+
 // hide empty message
 emptyMessage.classList.add("hidden");
 
+// render tasks in ui
+renderTask(task)
+
+ // Reset & Close modal
+  taskTitle.value = "";
+  taskPriority.value = "Low";
+  taskDueDate.value = "";
+  taskModal.classList.add("hidden");
+})
+
+// render single task in ui
+function renderTask (task) {
 // create task box
 const taskDiv = document.createElement("div");
 taskDiv.innerHTML = `
@@ -85,34 +108,44 @@ taskDiv.innerHTML = `
             <input type="checkbox"
              class="mx-4 mt-1 cursor-pointer h-5 w-5 border-2 border-[#839FEE] hover:border-opacity-65 rounded appearance-none bg-transparent checked:bg-[#EB03FF]" name="" id="">
             <div class="">
-              <h3 class="text-base text-white font-bold">${title}</h3>
-              <div class="flex gap-5 items-center mt-2 text-[#839FEE]">
-                <span class="text-sm ">Added : <span class="">${createdAt}</span></span>
-                <span class="px-4 py-1 text-xs font-medium text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF]">${priority}</span>
-                <span class="px-4 py-1 text-xs font-medium text-[#94D09F] rounded-3xl border-2 border-[#94D09F]">Deadline: <span class=""> ${dueDate} </span></span>
+              <h3 class="text-base text-white font-bold">${task.title}</h3>
+              <div class="flex gap-3 items-center mt-2 text-[#839FEE]">
+                <span class="text-sm ">Added : <span class="">${task.createdAt}</span></span>
+                <span class="px-4 py-1 text-xs font-medium text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF]">${task.priority}</span>
+                <span class="px-4 py-1 text-xs font-medium text-[#94D09F] rounded-3xl border-2 border-[#94D09F]">Deadline: <span class=""> ${task.dueDate || "no date"} </span></span>
               </div>
             </div>
           </div>
 
           <!-- actions btn -->
           <div class="flex gap-5 items-center mx-8">
-            <i class="fa-solid fa-pen-to-square text-[#BFAF1C] text-2xl cursor-pointer hover:text-opacity-65"></i>
-            <i class="fa-solid fa-trash text-[#FF5730] text-2xl cursor-pointer hover:text-opacity-65"></i>
+            <i class="fa-solid fa-pen-to-square text-[#BFAF1C] text-xl cursor-pointer hover:text-opacity-65"></i>
+            <i class="fa-solid fa-trash text-[#FF5730] text-xl cursor-pointer hover:text-opacity-65"></i>
           </div>
        </div>
-`
+`;
 
 // append to task list
 taskList.appendChild(taskDiv);
+}
 
- // Reset & Close
-  taskTitle.value = "";
-  taskPriority.value = "Low";
-  taskDueDate.value = "";
-  taskModal.classList.add("hidden");
+// load saved tasks on page load
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-
+  if (savedTasks.length === 0) {
+    emptyMessage.classList.remove("hidden");
+  } else {
+    emptyMessage.classList.add("hidden");
+    savedTasks.forEach(task => renderTask(task));
+  }
 })
 
-// ___________ add task btn functionality end __________
+// Trigger save on Enter key
+taskTitle.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    saveTaskBtn.click();
+  }
+});
 
+// ___________ add task btn functionality end __________
