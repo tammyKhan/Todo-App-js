@@ -39,7 +39,7 @@
     }
   });
 // ___________  theme toggle end  ____________
-   
+
 // ___________ add task btn functionality start __________
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskModal = document.getElementById("taskModal");
@@ -52,15 +52,18 @@ const taskTitle = document.getElementById("taskTitle");
 const taskPriority = document.getElementById("taskPriority");
 const taskDueDate = document.getElementById("taskDueDate");
 
+let editingTaskIndex = null; // track which task is being edited
+
 // open Modal
 addTaskBtn.addEventListener("click", () => {
-  taskModal.classList.remove("hidden")
-})
+  taskModal.classList.remove("hidden");
+});
 
 // close Modal
 cancelBtn.addEventListener("click", () => {
-  taskModal.classList.add("hidden")
-})
+  taskModal.classList.add("hidden");
+  resetForm();
+});
 
 // save task
 saveTaskBtn.addEventListener("click", () => {
@@ -69,64 +72,98 @@ saveTaskBtn.addEventListener("click", () => {
   const dueDate = taskDueDate.value;
   const createdAt = new Date().toLocaleString();
 
-if(!title) {
-  alert("The title is required");
-  return;
-}
+  if (!title) {
+    alert("The title is required");
+    return;
+  }
 
-// save to localstorage
-const task = {
-  title, priority, dueDate, createdAt
-};
-// get existing tasks from localstorage
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-// add new task
-tasks.push(task)
-// save back to localstorage
-localStorage.setItem("tasks", JSON.stringify(tasks))
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-// hide empty message
-emptyMessage.classList.add("hidden");
+  if (editingTaskIndex !== null) {
+    // Editing existing task
+    tasks[editingTaskIndex] = { title, priority, dueDate, createdAt };
+    editingTaskIndex = null;
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    taskList.innerHTML = "";
+    tasks.forEach((task, index) => renderTask(task, index));
+  } else {
+    // Adding new task
+    const task = { title, priority, dueDate, createdAt };
+    tasks.push(task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    renderTask(task, tasks.length - 1);
+  }
 
-// render tasks in ui
-renderTask(task)
+  emptyMessage.classList.add("hidden");
+  resetForm();
+  taskModal.classList.add("hidden");
+});
 
- // Reset & Close modal
+// reset form
+function resetForm() {
   taskTitle.value = "";
   taskPriority.value = "Low";
   taskDueDate.value = "";
-  taskModal.classList.add("hidden");
-})
+}
 
-// render single task in ui
-function renderTask (task) {
-// create task box
-const taskDiv = document.createElement("div");
-taskDiv.innerHTML = `
+// render single task
+function renderTask(task, index) {
+  const taskDiv = document.createElement("div");
+  taskDiv.classList.add("task-item");
+
+  taskDiv.innerHTML = `
     <div class="flex justify-between bg-[#1F0356] p-3 rounded-3xl">
-          <div class="flex items-start">
-            <input type="checkbox"
-             class="mx-4 mt-1 cursor-pointer h-5 w-5 border-2 border-[#839FEE] hover:border-opacity-65 rounded appearance-none bg-transparent checked:bg-[#EB03FF]" name="" id="">
-            <div class="">
-              <h3 class="text-base text-white font-bold">${task.title}</h3>
-              <div class="flex gap-3 items-center mt-2 text-[#839FEE]">
-                <span class="text-sm ">Added : <span class="">${task.createdAt}</span></span>
-                <span class="px-4 py-1 text-xs font-medium text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF]">${task.priority}</span>
-                <span class="px-4 py-1 text-xs font-medium text-[#94D09F] rounded-3xl border-2 border-[#94D09F]">Deadline: <span class=""> ${task.dueDate || "no date"} </span></span>
-              </div>
-            </div>
+      <div class="flex items-start">
+        <input type="checkbox"
+          class="mx-4 mt-1 cursor-pointer h-5 w-5 border-2 border-[#839FEE] hover:border-opacity-65 rounded appearance-none bg-transparent checked:bg-[#EB03FF]" />
+        <div>
+          <h3 class="text-base text-white font-bold">${task.title}</h3>
+          <div class="flex gap-3 items-center mt-2 text-[#839FEE]">
+            <span class="text-sm">Added : <span class="createdAt">${task.createdAt}</span></span>
+            <span class="priority px-4 py-1 text-xs font-medium text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF]">${task.priority}</span>
+            <span class="due px-4 py-1 text-xs font-medium text-[#94D09F] rounded-3xl border-2 border-[#94D09F]">Deadline: <span class="dueDate">${task.dueDate || "no date"}</span></span>
           </div>
+        </div>
+      </div>
 
-          <!-- actions btn -->
-          <div class="flex gap-5 items-center mx-8">
-            <i class="fa-solid fa-pen-to-square text-[#BFAF1C] text-xl cursor-pointer hover:text-opacity-65"></i>
-            <i class="fa-solid fa-trash text-[#FF5730] text-xl cursor-pointer hover:text-opacity-65"></i>
-          </div>
-       </div>
-`;
+      <div class="flex gap-5 items-center mx-8">
+        <i class="fa-solid fa-pen-to-square text-[#BFAF1C] text-xl cursor-pointer hover:text-opacity-65 edit-icon"></i>
+        <i class="fa-solid fa-trash text-[#FF5730] text-xl cursor-pointer hover:text-opacity-65 delete-icon"></i>
+      </div>
+    </div>
+  `;
 
-// append to task list
-taskList.appendChild(taskDiv);
+  taskList.appendChild(taskDiv);
+
+  const editBtn = taskDiv.querySelector(".edit-icon");
+  const deleteBtn = taskDiv.querySelector(".delete-icon");
+
+  // Edit functionality
+  editBtn.addEventListener("click", () => {
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const idx = Array.from(taskList.children).indexOf(taskDiv);
+    const taskToEdit = tasks[idx];
+
+    taskTitle.value = taskToEdit.title;
+    taskPriority.value = taskToEdit.priority;
+    taskDueDate.value = taskToEdit.dueDate;
+
+    editingTaskIndex = idx;
+    taskModal.classList.remove("hidden");
+  });
+
+  // Delete functionality
+  deleteBtn.addEventListener("click", () => {
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const idx = Array.from(taskList.children).indexOf(taskDiv);
+    tasks.splice(idx, 1);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    taskDiv.remove();
+
+    if (tasks.length === 0) {
+      emptyMessage.classList.remove("hidden");
+    }
+  });
 }
 
 // load saved tasks on page load
@@ -137,15 +174,14 @@ document.addEventListener("DOMContentLoaded", () => {
     emptyMessage.classList.remove("hidden");
   } else {
     emptyMessage.classList.add("hidden");
-    savedTasks.forEach(task => renderTask(task));
+    savedTasks.forEach((task, index) => renderTask(task, index));
   }
-})
+});
 
-// Trigger save on Enter key
+// save task on Enter key
 taskTitle.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     saveTaskBtn.click();
   }
 });
-
 // ___________ add task btn functionality end __________
