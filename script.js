@@ -88,7 +88,7 @@
       tasks[editingTaskIndex].dueDate = dueDate;
     } else {
      // add new tasks
-     tasks.push({title, priority, dueDate, createdAt})
+     tasks.push({title, priority, dueDate, createdAt, completed: false})
     }
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -113,15 +113,14 @@
   function renderTask (task, index) {
     const taskDiv = document.createElement("div");
     taskDiv.classList.add("task-item");
-    taskDiv.setAttribute("data-index", index);
 
           taskDiv.innerHTML = `
         <div class="flex justify-between bg-[#1F0356] p-3 rounded-3xl">
           <div class="flex items-start">
-            <input type="checkbox"
-              class="mx-4 mt-1 cursor-pointer h-5 w-5 border-2 border-[#839FEE] hover:border-opacity-65 rounded appearance-none bg-transparent checked:bg-[#EB03FF]" />
+            <input type="checkbox" ${task.completed ? "checked" : ""}
+              class="mx-4 mt-1 cursor-pointer h-5 w-5 border-2 border-[#839FEE] hover:border-opacity-65 rounded appearance-none bg-transparent checked:bg-[#94D09F]" />
             <div>
-              <h3 class="text-base text-white font-bold">${task.title}</h3>
+              <h3 class="text-base  font-bold ${task.completed ? "line-through text-[#94D09F]" : "text-white"}">${task.title}</h3>
               <div class="flex gap-3 items-center mt-2 text-[#839FEE]">
                 <span class="text-sm">Added: <span class="createdAt">${task.createdAt}</span></span>
                 <span class="priority px-4 py-1 text-xs font-medium text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF]">${task.priority}</span>
@@ -138,29 +137,37 @@
       `;
 
       taskList.appendChild(taskDiv);
-
+      
+      const checkbox = taskDiv.querySelector("input[type='checkbox']");
       const editBtn = taskDiv.querySelector(".edit-icon");
       const deleteBtn = taskDiv.querySelector(".delete-icon");
+
+      // toggle completed task
+      checkbox.addEventListener("change", () => {
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        tasks[index].completed = checkbox.checked;
+
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        renderAllTasks();
+      })
 
       // edit functionality
       editBtn.addEventListener("click", () => {
         let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        const idx = taskDiv.getAttribute("data-index");
-        const taskToEdit = tasks[idx];
+        const taskToEdit = tasks[index];
 
         taskTitle.value = taskToEdit.title;
         taskPriority.value = taskToEdit.priority;
         taskDueDate.value = taskToEdit.dueDate;
 
-      editingTaskIndex = idx;
+      editingTaskIndex = index;
       taskModal.classList.remove("hidden");        
       })
 
     // delete functionality
     deleteBtn.addEventListener("click", () => {
       let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-      const idx = taskDiv.getAttribute("data-index");
-      tasks.splice(idx, 1);
+      tasks.splice(index, 1);
 
       localStorage.setItem("tasks", JSON.stringify(tasks))
       renderAllTasks();
