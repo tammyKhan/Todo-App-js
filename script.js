@@ -83,12 +83,15 @@
 
     if (editingTaskIndex !== null) {
       // update existing tasks
+      const id = tasks[editingTaskIndex].id;
+      tasks[editingTaskIndex].id = id;
       tasks[editingTaskIndex].title = title;
       tasks[editingTaskIndex].priority = priority;
       tasks[editingTaskIndex].dueDate = dueDate;
     } else {
      // add new tasks
-     tasks.push({title, priority, dueDate, createdAt, completed: false})
+
+     tasks.push({id: Date.now(),title, priority, dueDate, createdAt, completed: false})
     }
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -101,18 +104,28 @@
     const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
     taskList.innerHTML = "";
 
-    if(savedTasks.length === 0) {
+    let filteredTasks = savedTasks;
+    if(currentFilter === "inProcess") {
+       filteredTasks = savedTasks.filter(task => !task.completed);
+    } else if(currentFilter === "completed") {
+      filteredTasks = savedTasks.filter(task => task.completed)
+    }
+
+    if(filteredTasks.length === 0) {
         emptyMessage.classList.remove("hidden")
     } else {
        emptyMessage.classList.add("hidden")
-       savedTasks.forEach((task, index) => renderTask(task, index));
+       filteredTasks.forEach((task, index) => renderTask(task, index));
     }
+    updateTaskCounts();
   }
 
   // render single task
   function renderTask (task, index) {
     const taskDiv = document.createElement("div");
     taskDiv.classList.add("task-item");
+    taskDiv.setAttribute("data-index", index);
+    taskDiv.setAttribute("data-id", task.id)
 
           taskDiv.innerHTML = `
         <div class="flex justify-between bg-[#1F0356] p-3 rounded-3xl">
@@ -142,39 +155,86 @@
       const editBtn = taskDiv.querySelector(".edit-icon");
       const deleteBtn = taskDiv.querySelector(".delete-icon");
 
-      // toggle completed task
+      //(checkbox) toggle completed task
       checkbox.addEventListener("change", () => {
         let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        tasks[index].completed = checkbox.checked;
+        const id = taskDiv.getAttribute("data-id");
+        const taskIndex = tasks.findIndex(t => t.id == id);
 
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-        renderAllTasks();
+        if (taskIndex !== -1){
+          tasks[taskIndex].completed = checkbox.checked;
+          localStorage.setItem("tasks", JSON.stringify(tasks));
+          renderAllTasks();
+        }
       })
 
       // edit functionality
       editBtn.addEventListener("click", () => {
         let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        const taskToEdit = tasks[index];
+        const id = taskDiv.getAttribute("data-id");
+        const taskToEdit = tasks.find(t => t.id == id);
 
         taskTitle.value = taskToEdit.title;
         taskPriority.value = taskToEdit.priority;
         taskDueDate.value = taskToEdit.dueDate;
 
-      editingTaskIndex = index;
+      editingTaskIndex = tasks.findIndex(t => t.id == id);
       taskModal.classList.remove("hidden");        
       })
 
     // delete functionality
     deleteBtn.addEventListener("click", () => {
       let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-      tasks.splice(index, 1);
+      const id = taskDiv.getAttribute("data-id");
+      tasks = tasks.filter(t => t.id != id);
 
       localStorage.setItem("tasks", JSON.stringify(tasks))
       renderAllTasks();
     })
 
   }
-// Load tasks initially
-  renderAllTasks()
-
     // __________________Add Task Btn functionality End_____________________
+
+    // ________________________   filter functionality (all, active, complete) start _________________________
+
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    let currentFilter = "all";
+
+    // active filter btn style
+    function setActiveFilter(activeBtn) {
+      filterButtons.forEach(btn => {
+        btn.classList.remove("bg-[#839FEE]");
+        btn.classList.add("bg-[#1F0356]");
+      })
+
+      activeBtn.classList.remove("bg-[#1F0356]");
+      activeBtn.classList.add("bg-[#839FEE]");
+    }
+
+    // Add Eventlistener for all filter btns
+    filterButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+         currentFilter = btn.getAttribute("data-filter");
+          setActiveFilter(btn);
+          renderAllTasks();
+      })
+    })
+
+    // Updating Task count
+    function updateTaskCounts () {
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      
+      const allCount = tasks.length;
+      const inProcessCount = tasks.filter(t => !t.completed).length;
+      const completedCount = tasks.filter(t => t.completed).length;
+
+      // Updating the UI
+      document.querySelector('[data-count="all"]').textContent = allCount;
+      document.querySelector('[data-count="inProcess"]').textContent = inProcessCount;
+      document.querySelector('[data-count="completed"]').textContent = completedCount;
+
+    }
+    // ________________________   filter functionality (all, active, complete) end _________________________
+
+    // Load tasks initially
+  renderAllTasks()

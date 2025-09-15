@@ -91,38 +91,38 @@
          </form>
       </div>
 
-      <!-- category section -->
+      <!-- filter -->
        <div class="grid grid-cols-3 gap-2  md:gap-6 ">
          <!-- All tasks  -->
-         <div class="bg-[#1F0356] py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
-             <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#839FEE] flex items-center justify-center">
+         <div data-filter="all" class="bg-[#839FEE] filter-btn cursor-pointer hover:bg-opacity-50 py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
+             <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#344FA1] flex items-center justify-center">
                 <i class="fa-solid fa-list-check text-white"></i>
              </div>
              <div class="text-white space-y-2">
                 <h3 class="md:text-xl text-base  font-bold">All Tasks</h3>
-                <p class="text-sm text-[#677AB8]"><span>40</span> tasks</p>
+                <p class="text-sm text-white"><span data-count="all">40</span> tasks</p>
              </div>
          </div>
 
         <!-- In Process tasks  -->
-         <div class="bg-[#1F0356] py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
-             <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#839FEE] flex items-center justify-center">
+         <div  data-filter="inProcess" class="bg-[#1F0356] filter-btn cursor-pointer hover:bg-opacity-50 py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
+             <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#344FA1] flex items-center justify-center">
                <i class="fa-solid fa-gears text-white"></i>
            </div>
              <div class="text-white space-y-2">
                 <h3 class="md:text-xl text-base  font-bold">In Process</h3>
-                <p class="text-sm text-[#677AB8]"><span>10</span> tasks</p>
+                <p class="text-sm text-white"><span data-count="inProcess">10</span> tasks</p>
              </div>
          </div>
 
         <!-- Completed tasks  -->
-         <div class="bg-[#1F0356] py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
-             <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#839FEE] flex items-center justify-center">
+         <div  data-filter="completed" class="bg-[#1F0356] filter-btn cursor-pointer hover:bg-opacity-50 py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
+             <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#344FA1] flex items-center justify-center">
                 <i class="fa-solid fa-check text-white"></i>
              </div>
              <div class="text-white space-y-2">
                 <h3 class="md:text-xl text-base  font-bold">Completed Tasks</h3>
-                <p class="text-sm text-[#677AB8]"><span>30</span> tasks</p>
+                <p class="text-sm text-white"><span data-count="completed">30</span> tasks</p>
              </div>
          </div>
       </div>
