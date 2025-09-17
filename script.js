@@ -104,6 +104,7 @@
     const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
     taskList.innerHTML = "";
 
+    // filter by status
     let filteredTasks = savedTasks;
     if(currentFilter === "inProcess") {
        filteredTasks = savedTasks.filter(task => !task.completed);
@@ -111,12 +112,26 @@
       filteredTasks = savedTasks.filter(task => task.completed)
     }
 
-    if(filteredTasks.length === 0) {
-        emptyMessage.classList.remove("hidden")
-    } else {
-       emptyMessage.classList.add("hidden")
-       filteredTasks.forEach((task, index) => renderTask(task, index));
+    // filter by search query
+    if(searchQuery){
+      filteredTasks = filteredTasks.filter(task => 
+        task.title.toLowerCase().includes(searchQuery) )
     }
+
+    if (filteredTasks.length === 0) {
+    emptyMessage.classList.remove("hidden");
+
+    if (searchQuery) {
+        emptyMessage.textContent = `No matching tasks found for "${searchQuery}"`;
+    } else {
+         emptyMessage.textContent = `No Tasks Found`;     
+    }
+
+} else {
+    emptyMessage.classList.add("hidden");
+    filteredTasks.forEach((task, index) => renderTask(task, index));
+}
+
     updateTaskCounts();
   }
 
@@ -124,7 +139,6 @@
   function renderTask (task, index) {
     const taskDiv = document.createElement("div");
     taskDiv.classList.add("task-item");
-    taskDiv.setAttribute("data-index", index);
     taskDiv.setAttribute("data-id", task.id)
 
           taskDiv.innerHTML = `
@@ -235,6 +249,30 @@
 
     }
     // ________________________   filter functionality (all, active, complete) end _________________________
+
+    // __________________Search functionality with Debounce Start_____________________
+
+   const searchInput = document.getElementById("searchInput");
+   let searchQuery = "";
+
+  //  debounce function
+  function debounce (func, delay) {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => func(...args), delay);
+    }
+  }
+
+   const handleSearch = debounce((e) => {
+    searchQuery = e.target.value.toLowerCase().trim();
+    renderAllTasks();
+   } , 300)
+
+   searchInput.addEventListener("input", handleSearch)
+
+    // __________________Search functionality with Debounce End_____________________
+
 
     // Load tasks initially
   renderAllTasks()
