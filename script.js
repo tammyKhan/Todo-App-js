@@ -118,6 +118,18 @@
         task.title.toLowerCase().includes(searchQuery) )
     }
 
+    // apply sorting
+    if(currentSort === "created"){
+      filteredTasks = [...filteredTasks].sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
+    } else if(currentSort === "priority"){
+      filteredTasks = [...filteredTasks].sort((a,b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+    } else if(currentSort === "dueDate") {
+      filteredTasks = [...filteredTasks].sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate));
+    } else if(currentSort === "az") {
+      filteredTasks = [...filteredTasks].sort((a,b) => a.title.localeCompare(b.title));
+    }
+
+    // empty check
     if (filteredTasks.length === 0) {
     emptyMessage.classList.remove("hidden");
 
@@ -209,7 +221,7 @@
   }
     // __________________Add Task Btn functionality End_____________________
 
-    // ________________________   filter functionality (all, active, complete) start _________________________
+    // __________________filter functionality (all, active, complete) start  __________________
 
     const filterButtons = document.querySelectorAll(".filter-btn");
     let currentFilter = "all";
@@ -248,7 +260,7 @@
       document.querySelector('[data-count="completed"]').textContent = completedCount;
 
     }
-    // ________________________   filter functionality (all, active, complete) end _________________________
+    // __________________filter functionality (all, active, complete) End  __________________
 
     // __________________Search functionality with Debounce Start_____________________
 
@@ -273,6 +285,28 @@
 
     // __________________Search functionality with Debounce End_____________________
 
+  // __________________ Sort functionality start  __________________
+
+const sortButtons = document.querySelectorAll(".sort-btn");
+const priorityOrder = { High: 1, Medium: 2, Low: 3 }
+
+let currentSort = null;
+
+// active sort btn style
+function setActiveSort (activeBtn) {
+  sortButtons.forEach(btn => btn.classList.remove("bg-[#EB03FF]"))
+  activeBtn.classList.add("bg-[#EB03FF]")
+}
+
+sortButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+     currentSort = btn.getAttribute("data-sort");
+     setActiveSort(btn);
+     renderAllTasks();
+  })
+})
+
+  // __________________ Sort functionality End  __________________
 
     // Load tasks initially
   renderAllTasks()
