@@ -308,5 +308,37 @@ sortButtons.forEach(btn => {
 
   // __________________ Sort functionality End  __________________
 
+  // __________________ Select All Toggle functionality __________________
+
+  const selectAllBtn = document.getElementById("selectAllBtn");
+
+  let allSelected = false;
+
+  selectAllBtn.addEventListener("click", () => {
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+     if(!allSelected){
+      tasks = tasks.map(task => ({...task, completed: true}));
+      selectAllBtn.textContent = "Unselect All";
+      allSelected = true;
+     } else {
+      tasks = tasks.map(task => ({...task, completed: false}));
+      selectAllBtn.textContent = "Select All";
+      allSelected = false;
+     }
+
+     localStorage.setItem("tasks", JSON.stringify(tasks));
+     renderAllTasks();
+  })
+
+    // __________________ Clear Complete Btn functionality __________________
+    const clearCompleteBtn = document.getElementById("clearCompleteBtn");
+
+    clearCompleteBtn.addEventListener("click", () => {
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks = tasks.filter(task => !task.completed);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      renderAllTasks()
+    })
+
     // Load tasks initially
   renderAllTasks()
