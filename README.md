@@ -39,9 +39,14 @@ A fully-functional **Todo app** developed with HTML, Tailwind CSS, and vanilla J
 
 ## 📸 Screenshots
 
-### 🏠 Homepage
+### 🏠 Desktop View - Light Mode
 ![Light Mode](./images/home.png)
+
+### 🏠 Desktop View - Dark Mode
 ![Dark Mode](./images/home-dark.png)
+
+### 📱 Mobile View
+![Mobile](./images/mobile.png)
 
 ### ➕ Add Task Modal
 ![Add Task Screenshot](./images/add-task.png)

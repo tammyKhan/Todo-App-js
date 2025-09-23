@@ -162,10 +162,11 @@
               <h3 class="text-base  font-bold ${task.completed ? "line-through text-[#94D09F]" : "text-white"}">${task.title}</h3>
               <div class="flex flex-col md:flex-row gap-3 md:items-center mt-2 text-[#839FEE]">
                 <span class="text-sm">Added: <span class="createdAt">${task.createdAt}</span></span>
-                <div>
-                <span class="priority px-4 py-1 text-xs font-medium text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF]">${task.priority}</span>
-                <span class="due px-4 py-1 text-xs font-medium text-[#94D09F] rounded-3xl border-2 border-[#94D09F]">Deadline: <span class="dueDate">${task.dueDate || "No date"}</span></span>
-                </div>
+              
+                 <span class="due px-2 md:px-3 py-1 text-xs font-medium text-[#94D09F] rounded-3xl border-2 border-[#94D09F] text-center w-3/4 md:w-auto">Deadline: <span class="dueDate">${task.dueDate || "No date"}</span></span>
+                <span class="priority px-2 md:px-3 py-1 text-xs font-medium text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF] w-1/3 text-center md:w-auto">${task.priority}</span>
+               
+                
               </div>
             </div>
           </div>
