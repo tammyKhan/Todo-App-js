@@ -154,27 +154,31 @@
     taskDiv.setAttribute("data-id", task.id)
 
           taskDiv.innerHTML = `
-        <div class="flex justify-between bg-[#1F0356] p-3 rounded-3xl">
-          <div class="flex items-start">
-            <input type="checkbox" ${task.completed ? "checked" : ""}
+  
+          <div class="flex  bg-[#1F0356] p-3 rounded-3xl">
+         
+              <input type="checkbox" ${task.completed ? "checked" : ""}
               class="mx-4 mt-1 cursor-pointer h-5 w-5 border-2 border-[#839FEE] hover:border-opacity-65 rounded appearance-none bg-transparent checked:bg-[#94D09F]" />
-            <div>
+            <div class="w-full">
+          
               <h3 class="text-base  font-bold ${task.completed ? "line-through text-[#94D09F]" : "text-white"}">${task.title}</h3>
-              <div class="flex flex-col md:flex-row gap-3 md:items-center mt-2 text-[#839FEE]">
+              <div class="flex justify-between w-full">
+               <div class="flex flex-col md:flex-row gap-3 md:items-center mt-2 text-[#839FEE]">
                 <span class="text-sm">Added: <span class="createdAt">${task.createdAt}</span></span>
               
-                 <span class="due px-2 md:px-3 py-1 text-xs font-medium text-[#94D09F] rounded-3xl border-2 border-[#94D09F] text-center w-3/4 md:w-auto">Deadline: <span class="dueDate">${task.dueDate || "No date"}</span></span>
-                <span class="priority px-2 md:px-3 py-1 text-xs font-medium text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF] w-1/3 text-center md:w-auto">${task.priority}</span>
-               
-                
+                 <span class="due px-2 md:px-3 py-1 text-xs font-medium text-[#94D09F] rounded-3xl border-2 border-[#94D09F] text-center ">Deadline: <span class="dueDate">${task.dueDate || "No date"}</span></span>
+                <span class="priority px-2 md:px-3 py-1 text-xs font-medium text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF]  text-center">${task.priority}</span>
               </div>
-            </div>
-          </div>
-
-          <div class="flex gap-5 items-center mx-8">
+              
+              <div class="flex flex-col md:flex-row gap-2 md:gap-5 items-center justify-end mx-4 md:mx-8">
             <i class="fa-solid fa-pen-to-square text-[#BFAF1C] text-xl cursor-pointer hover:text-opacity-65 edit-icon"></i>
             <i class="fa-solid fa-trash text-[#FF5730] text-xl cursor-pointer hover:text-opacity-65 delete-icon"></i>
           </div>
+              </div>
+              
+            </div>
+
+          
         </div>
       `;
 

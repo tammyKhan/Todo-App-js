@@ -6,7 +6,7 @@ A fully-functional **Todo app** developed with HTML, Tailwind CSS, and vanilla J
 
 ## 🔗 Live Demo
 
-👉 [View Project on GitHub Pages](#)
+👉 [View Project](https://tammykhan.github.io/Todo-App-js/)
 
 ---
 
