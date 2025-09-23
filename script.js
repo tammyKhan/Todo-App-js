@@ -160,10 +160,12 @@
               class="mx-4 mt-1 cursor-pointer h-5 w-5 border-2 border-[#839FEE] hover:border-opacity-65 rounded appearance-none bg-transparent checked:bg-[#94D09F]" />
             <div>
               <h3 class="text-base  font-bold ${task.completed ? "line-through text-[#94D09F]" : "text-white"}">${task.title}</h3>
-              <div class="flex gap-3 items-center mt-2 text-[#839FEE]">
+              <div class="flex flex-col md:flex-row gap-3 md:items-center mt-2 text-[#839FEE]">
                 <span class="text-sm">Added: <span class="createdAt">${task.createdAt}</span></span>
+                <div>
                 <span class="priority px-4 py-1 text-xs font-medium text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF]">${task.priority}</span>
                 <span class="due px-4 py-1 text-xs font-medium text-[#94D09F] rounded-3xl border-2 border-[#94D09F]">Deadline: <span class="dueDate">${task.dueDate || "No date"}</span></span>
+                </div>
               </div>
             </div>
           </div>
@@ -264,7 +266,7 @@
 
     // __________________Search functionality with Debounce Start_____________________
 
-   const searchInput = document.getElementById("searchInput");
+   const searchInputs = document.querySelectorAll(".searchInput");
    let searchQuery = "";
 
   //  debounce function
@@ -281,7 +283,9 @@
     renderAllTasks();
    } , 300)
 
-   searchInput.addEventListener("input", handleSearch)
+   searchInputs.forEach(input => {
+    input.addEventListener("input", handleSearch)
+   })
 
     // __________________Search functionality with Debounce End_____________________
 

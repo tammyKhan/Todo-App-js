@@ -57,9 +57,9 @@
       </nav>
    </header>
   
-   <main class="space-y-5 mt-8 ">
+   <main class="space-y-6 mt-8 ">
       <!-- Add Task Button -->
-     <div id="openModalBtn" class="fixed right-2 top-96 w-12 h-12 rounded-full  bg-[#EB03FF] flex justify-center items-center cursor-pointer hover:bg-opacity-65">
+     <div title="Add task" id="openModalBtn" class="fixed right-2 top-96 w-12 h-12 rounded-full  bg-[#EB03FF] flex justify-center items-center cursor-pointer hover:bg-opacity-65">
       <i class="fa-solid fa-plus text-white"></i>
      </div>
 
@@ -94,34 +94,34 @@
       <!-- filter -->
        <div class="grid grid-cols-3 gap-2  md:gap-6 ">
          <!-- All tasks  -->
-         <div data-filter="all" class="bg-[#839FEE] filter-btn cursor-pointer hover:bg-opacity-50 py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
+         <div data-filter="all" class="bg-[#839FEE] filter-btn cursor-pointer hover:bg-opacity-50 py-2 px-2 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
              <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#344FA1] flex items-center justify-center">
                 <i class="fa-solid fa-list-check text-white"></i>
              </div>
              <div class="text-white space-y-2">
-                <h3 class="md:text-xl text-base  font-bold">All Tasks</h3>
+                <h3 class="lg:text-xl md:text-lg text-base font-bold">All Tasks</h3>
                 <p class="text-sm text-white"><span data-count="all"></span> tasks</p>
              </div>
          </div>
 
         <!-- In Process tasks  -->
-         <div  data-filter="inProcess" class="bg-[#1F0356] filter-btn cursor-pointer hover:bg-opacity-50 py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
+         <div  data-filter="inProcess" class="bg-[#1F0356] filter-btn cursor-pointer hover:bg-opacity-50 py-2 px-2 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
              <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#344FA1] flex items-center justify-center">
                <i class="fa-solid fa-gears text-white"></i>
            </div>
              <div class="text-white space-y-2">
-                <h3 class="md:text-xl text-base  font-bold">In Process</h3>
+                <h3 class="lg:text-xl md:text-lg text-base font-bold">In Process</h3>
                 <p class="text-sm text-white"><span data-count="inProcess"></span> tasks</p>
              </div>
          </div>
 
         <!-- Completed tasks  -->
-         <div  data-filter="completed" class="bg-[#1F0356] filter-btn cursor-pointer hover:bg-opacity-50 py-3 px-3 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
+         <div  data-filter="completed" class="bg-[#1F0356] filter-btn cursor-pointer hover:bg-opacity-50 py-2 px-2 md:py-4 md:px-5  flex gap-2 md:gap-3 rounded-2xl">
              <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#344FA1] flex items-center justify-center">
                 <i class="fa-solid fa-check text-white"></i>
              </div>
              <div class="text-white space-y-2">
-                <h3 class="md:text-xl text-base  font-bold">Completed Tasks</h3>
+                <h3 class="lg:text-xl md:text-lg text-base font-bold">Completed Tasks</h3>
                 <p class="text-sm text-white"><span data-count="completed"></span> tasks</p>
              </div>
          </div>
@@ -130,7 +130,7 @@
   <!-- sort -->
    <div class="flex gap-2 justify-between sm:justify-center sm:gap-10  items-center">
       <div class="md:w-2/3 flex gap-3 md:gap-8 items-center">
-         <h3 class="text-lg font-bold text-white">Sort :-</h3>
+         <h3 class="lg:text-xl md:text-lg text-base font-bold text-white">Sort :-</h3>
          <div class="border-2 border-[#839FEE] rounded-3xl">
             <button  data-sort="created" class="sort-btn transition-all duration-300 ease-in-out px-4 lg:px-8 py-2 font-semibold text-white rounded-3xl bg-[#EB03FF] hover:text-opacity-65">Created</button>
             <button  data-sort="priority" class="sort-btn transition-all duration-300 ease-in-out px-4 lg:px-8 py-2 font-semibold text-white rounded-3xl hover:text-opacity-65">Priority</button>
@@ -141,30 +141,32 @@
 
       <!-- search tasks -->
       <div class="md:w-1/3 ">
-        <i class="fa-solid fa-magnifying-glass md:hidden text-white"></i>
-        <input id="searchInput" type="text" placeholder="search tasks here" class="bg-transparent hidden md:block w-full placeholder:text-[#839FEE] text-white border-2 p-1 px-2 focus:ring-2 focus:ring-white outline-none rounded-3xl border-[#839FEE]  ">
+        <input id="" type="text" placeholder="search tasks here" class="searchInput bg-transparent hidden md:block w-full placeholder:text-[#839FEE] text-white border-2 p-1 px-2 focus:ring-2 focus:ring-white outline-none rounded-3xl border-[#839FEE]  ">
       </div>
    </div>
 
    <!--  actions -->
-   <div class="flex justify-end items-center">
+   <div class="flex justify-between items-center">
+      <!-- search tasks small device-->
+      <div class="w-2/5">
+          <input id="" type="text" placeholder="search tasks here" class="searchInput bg-transparent  md:hidden w-full placeholder:text-[#839FEE] text-white border-2 p-1 px-2 focus:ring-2 focus:ring-white outline-none rounded-3xl border-[#839FEE]  ">
+      </div>
       
       <div class="flex gap-2">
-         <button id="selectAllBtn" class="px-4 py-1 font-semibold text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF] hover:text-opacity-65">Select All</button>
-         <button id="clearCompleteBtn" class="px-4 py-1 font-semibold text-[#FF5730] border-2 border-[#FF5730] rounded-3xl hover:text-opacity-65">Clear Complete</button>
+         <button id="selectAllBtn" class="px-3 py-1 md:px-4 md:py-1  md:text-base text-sm  font-semibold text-[#EB03FF] rounded-3xl border-2 border-[#EB03FF] hover:text-opacity-65">Select All</button>
+         <button id="clearCompleteBtn" class="px-3 py-1 md:px-4 md:py-1  md:text-base text-sm   font-semibold text-[#FF5730] border-2 border-[#FF5730] rounded-3xl hover:text-opacity-65">Clear Complete</button>
       </div>
    </div>
 
 <!-- task list section  -->
    <div  class="space-y-3">
-
        <!-- Empty State -->
   <p id="emptyMessage" class="text-[#839FEE] text-lg mt-12 text-center font-medium"></p>
 
   <!-- task list -->
    <div id="taskList" class="space-y-2" >
-    
    </div>
+   
    </div>
    </main>
 </body>
